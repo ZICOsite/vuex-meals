@@ -1,18 +1,27 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <FavoriteMeals :favCarts="getMealsFav" />
+    <Meals />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import FavoriteMeals from "@/components/FavoriteMeals.vue";
+import Meals from "@/components/Meals.vue";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: 'HomeView',
+  name: "HomeView",
   components: {
-    HelloWorld
-  }
-}
+    FavoriteMeals,
+    Meals,
+  },
+  computed: {
+    ...mapGetters(["getMealsFav"]),
+  },
+  methods: {
+    ...mapActions(["GET_MEALS_API"]),
+  },
+};
 </script>
