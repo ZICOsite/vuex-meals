@@ -1,5 +1,5 @@
 <template>
-  <div class="fav-meals">
+  <div class="fav-meals" ref="favMeals">
     <div class="container">
       <h3 class="fav-meals__title">Favorite Meals</h3>
       <ul class="fav-meals__list">
@@ -31,6 +31,17 @@ export default {
   computed: {
     ...mapGetters(["getMealsFav"]),
   },
+  mounted() {
+    window.addEventListener("scroll", () => {
+      if (this.$refs.favMeals) {
+        if (window.scrollY > 300) {
+          this.$refs.favMeals.classList.add("fixed");
+        } else {
+          this.$refs.favMeals.classList.remove("fixed");
+        }
+      }
+    });
+  },
 };
 </script>
 
@@ -39,15 +50,38 @@ export default {
   padding: 16px 0;
   background: #f5f7ff;
   box-shadow: 0 0 10px 2px rgb(51 51 51 / 10%) inset;
+  transition: 0.4s;
+  @media (max-width: 576px) {
+    padding: 0;
+  }
+  &.fixed {
+    position: fixed;
+    width: 100%;
+    top: 0;
+
+    .fav-meals__title {
+      font-size: unset;
+    }
+
+    .fav-meals__item {
+      max-width: 100px;
+    }
+  }
   &__title {
     font-size: 36px;
     text-align: center;
-    margin-bottom: 30px;
+    @media (max-width: 576px) {
+      font-size: unset;
+      margin-bottom: unset;
+    }
   }
   &__list {
     display: flex;
     column-gap: 30px;
     overflow-x: auto;
+    @media (max-width: 576px) {
+      column-gap: unset;
+    }
   }
   &__item {
     max-width: 150px;
@@ -58,6 +92,9 @@ export default {
     padding: 12px;
     flex-shrink: 0;
     position: relative;
+    @media (max-width: 576px) {
+      max-width: 100px;
+    }
     &-enter-active,
     &-leave-active {
       transition: 0.3s linear;

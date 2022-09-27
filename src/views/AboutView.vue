@@ -5,17 +5,16 @@
       <div class="info__content">
         <img :src="getInfoMeal.strMealThumb" alt="" class="info__image" />
         <div class="info__recipt">
-          <h3 class="info__name">Ingredients <small>({{ getInfoMeal.strArea }})</small> </h3>
+          <h3 class="info__name">
+            Ingredients <small>({{ getInfoMeal.strArea }})</small>
+          </h3>
           <ul class="info__list">
-            <li class="info__item" v-for="i in 20" :key="i">
-              <span
-                v-show="getInfoMeal[['strIngredient' + i]]"
-                class="info__span"
-                :class="{ active: getInfoMeal[['strIngredient' + i]] }"
-              >
-                {{ getInfoMeal[["strIngredient" + i]] }} -
-                {{ getInfoMeal[["strMeasure" + i]] }}
-              </span>
+            <li
+              class="info__item"
+              v-for="receipt in getInfoMeal.ingredients"
+              :key="receipt"
+            >
+              <span class="info__span"> {{ receipt.strIngredient }} - {{ receipt.strMeasure }} </span>
             </li>
           </ul>
         </div>
@@ -33,7 +32,10 @@ export default {
     ...mapGetters(["getInfoMeal"]),
   },
   methods: {
-    ...mapActions(["setMealSolo"]),
+    ...mapActions(["GET_MEAL_SOLO"]),
+  },
+  created() {
+    this.GET_MEAL_SOLO(+this.$route.params.id)
   },
 };
 </script>
@@ -60,6 +62,9 @@ export default {
   &__image {
     width: 40%;
     object-fit: cover;
+    @media (max-width: 636px) {
+      width: 100%;
+    }
   }
   &__name {
     font-size: 28px;
@@ -75,6 +80,7 @@ export default {
     font-size: 18px;
     line-height: 150%;
     text-align: justify;
+    margin-bottom: 16px;
   }
 }
 </style>

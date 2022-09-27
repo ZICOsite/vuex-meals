@@ -76,9 +76,17 @@ export default createStore({
         const resp = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
         const resData = await resp.json();
         const meal = resData.meals[0];
-  
-        commit("setMealSolo", meal);
-        // console.log(meal);
+        let obj = {...meal};
+        obj.ingredients = [];
+        for (let i = 1; i <= 20; i++) {
+          if(meal[`strIngredient${i}`]) {
+            obj.ingredients.push({
+              strIngredient: meal[`strIngredient${i}`],
+              strMeasure: meal[`strMeasure${i}`]
+            })
+          }
+        }
+        commit("setMealSolo", obj);
       } catch (error) {
         console.log("Error", error);
       }
